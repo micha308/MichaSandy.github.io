@@ -273,7 +273,7 @@
 
     details.moment summary::-webkit-details-marker { display: none; }
 
-    .date  { font-weight: 800; color: #ff2f7a; }
+    .date  { font-weight: 800; color: #ff2f7a; min-width: 92px; }
     .label { font-weight: 800; color: #222; }
 
     .chev {
@@ -388,7 +388,19 @@
 
       <div class="timeline">
 
-        <!-- NIEUW: It's a match -->
+        <!-- Jubileum moment (alleen zichtbaar op exacte jubileumdag) -->
+        <details class="moment" id="milestoneTimelineMoment" style="display:none;">
+          <summary>
+            <span class="date" id="milestoneTimelineDate">--</span>
+            <span class="label" id="milestoneTimelineLabel">🎉 Jubileum</span>
+            <span class="chev">⌄</span>
+          </summary>
+          <div class="moment-body" id="milestoneTimelineBody">
+            ❤️
+          </div>
+        </details>
+
+        <!-- It's a match -->
         <details class="moment">
           <summary>
             <span class="date">15-07-2023</span>
@@ -401,7 +413,7 @@
           </div>
         </details>
 
-        <!-- NIEUW: 1e date + kaartje -->
+        <!-- 1e date + kaartje -->
         <details class="moment">
           <summary>
             <span class="date">18-07-2023</span>
@@ -435,7 +447,7 @@
           </div>
         </details>
 
-        <!-- BESTAAND -->
+        <!-- Het begin van ons -->
         <details class="moment">
           <summary>
             <span class="date">03-08-2023</span>
@@ -522,6 +534,12 @@
     function pad2(n){ return String(n).padStart(2, "0"); }
     function formatNL(d) { return `${pad2(d.getDate())}-${pad2(d.getMonth() + 1)}-${d.getFullYear()}`; }
 
+    function sameDay(a, b){
+      return a.getFullYear() === b.getFullYear()
+        && a.getMonth() === b.getMonth()
+        && a.getDate() === b.getDate();
+    }
+
     function addMonths(date, monthsToAdd){
       const d = new Date(date.getTime());
       const y = d.getFullYear();
@@ -588,38 +606,65 @@
       `Samen sinds <strong>${formatNL(start)}</strong><br>` +
       `Nu samen: <strong>${d.years} jaar</strong>, <strong>${d.months} maanden</strong> en <strong>${d.days} dagen</strong> ❤️`;
 
-    // ===== Exacte mijlpaal-banner (alleen op jubileumdag) =====
+    // ===== Jubileum banner + jubileum tijdlijn-moment =====
     const milestoneWrap = document.getElementById("milestoneWrap");
     const milestoneBanner = document.getElementById("milestoneBanner");
     const milestoneIcon = document.getElementById("milestoneIcon");
     const milestoneTitle = document.getElementById("milestoneTitle");
     const milestoneSub = document.getElementById("milestoneSub");
 
+    const milestoneTimelineMoment = document.getElementById("milestoneTimelineMoment");
+    const milestoneTimelineDate = document.getElementById("milestoneTimelineDate");
+    const milestoneTimelineLabel = document.getElementById("milestoneTimelineLabel");
+    const milestoneTimelineBody = document.getElementById("milestoneTimelineBody");
+
     const monthsPassed = monthsSinceStartExact(start, today);
-    const isExactHalfYearBoundary = (monthsPassed % 6 === 0) && (monthsPassed > 0);
+    const milestoneDate = addMonths(startOfDay(start), monthsPassed);
+
+    const isExactHalfYearBoundary =
+      (monthsPassed % 6 === 0) &&
+      (monthsPassed > 0) &&
+      sameDay(milestoneDate, today);
 
     if (isExactHalfYearBoundary) {
       milestoneWrap.style.display = "block";
-      const milestoneDate = addMonths(startOfDay(start), monthsPassed);
 
       if (monthsPassed % 12 === 0) {
         const years = monthsPassed / 12;
+
         milestoneIcon.textContent = "♥️";
         milestoneTitle.textContent = `Vandaag precies ${years} jaar samen!`;
         milestoneSub.innerHTML =
           `Onze liefde groeit elk jaar. Samen sinds <strong>${formatNL(start)}</strong> ♥️`;
+
+        milestoneTimelineDate.textContent = formatNL(milestoneDate);
+        milestoneTimelineLabel.textContent = `♥️ Jubileum — ${years} jaar samen`;
+        milestoneTimelineBody.innerHTML =
+          `Vandaag (${formatNL(milestoneDate)}) vieren we <strong>${years} jaar</strong> samen. ❤️<br>
+           Een mijlpaal om nooit te vergeten.`;
       } else {
         const yearsTxt = formatHalfYear(monthsPassed);
+
         milestoneIcon.textContent = "🫶";
         milestoneTitle.textContent = `Vandaag precies ${yearsTxt} jaar samen!`;
         milestoneSub.innerHTML =
           `Exacte mijlpaal op <strong>${formatNL(milestoneDate)}</strong> 🫶`;
+
+        milestoneTimelineDate.textContent = formatNL(milestoneDate);
+        milestoneTimelineLabel.textContent = `🫶 Jubileum — ${yearsTxt} jaar samen`;
+        milestoneTimelineBody.innerHTML =
+          `Vandaag (${formatNL(milestoneDate)}) zijn we precies <strong>${yearsTxt} jaar</strong> samen. 🫶<br>
+           Ik kies jou. Vandaag. Morgen. Altijd. ❤️`;
       }
 
       milestoneBanner.classList.add("show");
+
+      milestoneTimelineMoment.style.display = "block";
+      milestoneTimelineMoment.open = true; // automatisch openklappen op jubileumdag
     } else {
       milestoneWrap.style.display = "none";
       milestoneBanner.classList.remove("show");
+      milestoneTimelineMoment.style.display = "none";
     }
 
     // ===== "Vandaag" label in tijdlijn =====
