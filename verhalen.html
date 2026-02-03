@@ -138,8 +138,8 @@
       text-align: left;
     }
 
-    /* ===== Mijlpaal banner (alleen zichtbaar op exacte datum) ===== */
-    .mini { margin-top: 12px; text-align: center; }
+    /* ===== Jubileum-wrap: standaard helemaal weg (geen ruimte!) ===== */
+    .mini { display: none; margin-top: 12px; text-align: center; }
 
     .milestone-banner{
       display: none;
@@ -354,8 +354,8 @@
         Samen sinds <strong>03-08-2023</strong><br>
       </p>
 
-      <!-- Alleen zichtbaar op de exacte dag van een halfjaar/jaar mijlpaal -->
-      <div class="mini">
+      <!-- Jubileum-wrap (wordt door JS pas zichtbaar op de juiste dag) -->
+      <div class="mini" id="milestoneWrap">
         <div id="milestoneBanner" class="milestone-banner" aria-live="polite">
           <div class="milestone-row">
             <div class="milestone-icon" id="milestoneIcon">🫶</div>
@@ -464,15 +464,9 @@
     // ===== Helpers: datums exact (kalender-precies) =====
     const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
-    function startOfDay(d) {
-      return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    }
-
+    function startOfDay(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
     function pad2(n){ return String(n).padStart(2, "0"); }
-
-    function formatNL(d) {
-      return `${pad2(d.getDate())}-${pad2(d.getMonth() + 1)}-${d.getFullYear()}`;
-    }
+    function formatNL(d) { return `${pad2(d.getDate())}-${pad2(d.getMonth() + 1)}-${d.getFullYear()}`; }
 
     function addMonths(date, monthsToAdd){
       const d = new Date(date.getTime());
@@ -497,24 +491,17 @@
     function diffYMD(start, end){
       let s = startOfDay(start);
       let e = startOfDay(end);
-
       if (e < s) return { years: 0, months: 0, days: 0 };
 
       let years = e.getFullYear() - s.getFullYear();
       let anchor = addYears(s, years);
-      if (anchor > e){
-        years--;
-        anchor = addYears(s, years);
-      }
+      if (anchor > e){ years--; anchor = addYears(s, years); }
 
       let months = e.getMonth() - anchor.getMonth();
       if (months < 0) months += 12;
 
       let anchor2 = addMonths(anchor, months);
-      if (anchor2 > e){
-        months--;
-        anchor2 = addMonths(anchor, months);
-      }
+      if (anchor2 > e){ months--; anchor2 = addMonths(anchor, months); }
 
       const days = Math.floor((e - anchor2) / MS_PER_DAY);
       return { years, months, days };
@@ -524,19 +511,16 @@
       let m = 0;
       let cursor = startOfDay(s);
       const end = startOfDay(e);
-
       while (true){
         const next = addMonths(cursor, 1);
-        if (next <= end){
-          m++;
-          cursor = next;
-        } else break;
+        if (next <= end){ m++; cursor = next; }
+        else break;
       }
       return m;
     }
 
     function formatHalfYear(monthsPassed){
-      const yearsFloat = monthsPassed / 12; // 0.5, 1.5, 2.5, ...
+      const yearsFloat = monthsPassed / 12;
       return String(yearsFloat).replace(".", ",");
     }
 
@@ -551,6 +535,7 @@
       `Nu samen: <strong>${d.years} jaar</strong>, <strong>${d.months} maanden</strong> en <strong>${d.days} dagen</strong> ❤️`;
 
     // ===== Exacte mijlpaal-banner (alleen op jubileumdag) =====
+    const milestoneWrap = document.getElementById("milestoneWrap");
     const milestoneBanner = document.getElementById("milestoneBanner");
     const milestoneIcon = document.getElementById("milestoneIcon");
     const milestoneTitle = document.getElementById("milestoneTitle");
@@ -560,6 +545,9 @@
     const isExactHalfYearBoundary = (monthsPassed % 6 === 0) && (monthsPassed > 0);
 
     if (isExactHalfYearBoundary) {
+      // Maak de hele container zichtbaar (geen lege ruimte op andere dagen)
+      milestoneWrap.style.display = "block";
+
       const milestoneDate = addMonths(startOfDay(start), monthsPassed);
 
       if (monthsPassed % 12 === 0) {
@@ -578,6 +566,7 @@
 
       milestoneBanner.classList.add("show");
     } else {
+      milestoneWrap.style.display = "none";
       milestoneBanner.classList.remove("show");
     }
 
