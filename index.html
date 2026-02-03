@@ -3,139 +3,343 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Micha & Sandy</title>
+  <title>Micha & Sandy 💗</title>
 
   <style>
-    :root {
-      --bg: #fafafa;
-      --card: #ffffff;
-      --text: #111111;
-      --muted: #666666;
-      --border: rgba(0,0,0,0.10);
-      --shadow: 0 10px 30px rgba(0,0,0,0.08);
+    :root{
+      --text:#1a1a1a;
+      --muted:#5b5b5b;
+      --glass: rgba(255,255,255,0.78);
+      --border: rgba(255,255,255,0.60);
+      --shadow: 0 18px 50px rgba(0,0,0,0.16);
+      --pink:#ff4d8d;
+      --pink2:#ff7ab2;
     }
 
-    body {
-      margin: 0;
+    * { box-sizing: border-box; }
+
+    body{
+      margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: var(--bg);
       color: var(--text);
       line-height: 1.6;
-    }
-
-    /* Centered layout */
-    .wrap {
       min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 18px;
+      overflow-x:hidden;
+
+      background:
+        radial-gradient(1000px 600px at 10% 10%, rgba(255, 77, 141, 0.22), transparent 60%),
+        radial-gradient(900px 600px at 90% 20%, rgba(255, 122, 178, 0.20), transparent 60%),
+        radial-gradient(900px 700px at 50% 100%, rgba(255, 77, 141, 0.14), transparent 55%),
+        linear-gradient(135deg, #fff1f6, #fff, #fff7fb);
     }
 
-    .card {
-      width: 100%;
-      max-width: 720px;
-      background: var(--card);
+    /* Zwevende hartjes */
+    .hearts{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:0.65;
+      z-index:0;
+    }
+    .heart{
+      position:absolute;
+      font-size:18px;
+      animation: floatUp linear infinite;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.12));
+    }
+    @keyframes floatUp{
+      from { transform: translateY(25vh) translateX(0) scale(0.9); opacity:0; }
+      10%  { opacity:0.8; }
+      to   { transform: translateY(-120vh) translateX(25px) scale(1.15); opacity:0; }
+    }
+
+    .wrap{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:18px;
+      position:relative;
+      z-index:1;
+    }
+
+    .card{
+      width:100%;
+      max-width: 820px;
+      background: var(--glass);
       border: 1px solid var(--border);
-      border-radius: 18px;
+      border-radius: 22px;
       box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      overflow:hidden;
+    }
+
+    /* HERO */
+    .hero{
+      position:relative;
+      width:100%;
+      height: 320px;
+      overflow:hidden;
+      background: rgba(255,255,255,0.55);
+    }
+
+    .hero img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+
+      /* fade-in */
+      opacity:0;
+      transform: scale(1.02);
+      animation: heroFade 1.0s ease forwards;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.00),
+        rgba(255,255,255,0.15),
+        rgba(255,255,255,0.70)
+      );
+    }
+
+    @keyframes heroFade{
+      to { opacity:1; transform: scale(1); }
+    }
+
+    .content{
       padding: 20px;
     }
 
-    .title {
-      margin: 0 0 8px;
-      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-      line-height: 1.2;
+    .badge{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background: rgba(255, 255, 255, 0.80);
+      border: 1px solid rgba(0,0,0,0.07);
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      user-select:none;
+    }
+
+    h1{
+      margin: 12px 0 6px;
+      font-size: clamp(1.75rem, 3.8vw, 2.6rem);
+      line-height: 1.12;
       letter-spacing: -0.02em;
     }
 
-    .subtitle {
-      margin: 0 0 16px;
+    .subtitle{
+      margin: 0 0 14px;
       color: var(--muted);
-      font-size: clamp(1rem, 2.2vw, 1.1rem);
+      font-size: clamp(1rem, 2.2vw, 1.12rem);
     }
 
-    .divider {
-      height: 1px;
-      background: var(--border);
+    .divider{
+      height:1px;
+      background: rgba(0,0,0,0.10);
       margin: 16px 0;
     }
 
-    .btnrow {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 12px;
+    .quote{
+      margin:0;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.70);
+      border: 1px solid rgba(0,0,0,0.06);
+      font-size: 1.05rem;
     }
 
-    .btn {
-      border: 1px solid var(--border);
-      background: white;
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .box{
+      background: rgba(255,255,255,0.70);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .box h2{
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+    }
+
+    .box p{
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .btnrow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 14px;
+    }
+
+    .btn{
+      border: 1px solid rgba(0,0,0,0.10);
+      background: rgba(255,255,255,0.95);
       padding: 12px 14px;
-      border-radius: 12px;
-      font-weight: 600;
+      border-radius: 14px;
+      font-weight: 800;
       cursor: pointer;
-      text-decoration: none;
+      text-decoration:none;
       color: var(--text);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      transition: transform .08s ease, background .2s ease, box-shadow .2s ease;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+      user-select:none;
     }
 
-    .btn:hover {
-      background: #f2f2f2;
+    .btn:hover{
+      background: #fff7fb;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.12);
     }
 
-    /* Mobile tweaks */
-    @media (max-width: 420px) {
-      .card { padding: 16px; border-radius: 16px; }
-      .btn { width: 100%; justify-content: center; }
+    .btn:active{
+      transform: translateY(1px) scale(0.99);
     }
 
-    /* Optional fade-in */
-    .fade {
-      opacity: 0;
-      transform: translateY(8px);
-      animation: fadeIn 0.6s ease forwards;
+    .btn.pink{
+      background: linear-gradient(135deg, var(--pink), var(--pink2));
+      color: white;
+      border: 1px solid rgba(255,255,255,0.35);
     }
 
-    @keyframes fadeIn {
-      to { opacity: 1; transform: translateY(0); }
+    .message{
+      display:none;
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(0,0,0,0.06);
+      color: var(--muted);
+    }
+
+    /* Fade-in voor inhoud */
+    .fade{
+      opacity:0;
+      transform: translateY(10px);
+      animation: fadeIn 0.8s ease forwards;
+      animation-delay: 0.15s;
+    }
+    @keyframes fadeIn{
+      to { opacity:1; transform: translateY(0); }
+    }
+
+    /* Mobiel */
+    @media (max-width: 720px){
+      .grid{ grid-template-columns: 1fr; }
+      .hero{ height: 260px; }
+    }
+    @media (max-width: 420px){
+      .content{ padding: 16px; }
+      .btn{ width:100%; justify-content:center; }
+      .hero{ height: 230px; }
     }
   </style>
 </head>
 
 <body>
+  <!-- Hartjeslaag -->
+  <div class="hearts" aria-hidden="true">
+    <span class="heart" style="left:8%;  top:85%; animation-duration: 11s;">💗</span>
+    <span class="heart" style="left:20%; top:92%; animation-duration: 14s; font-size:16px;">💞</span>
+    <span class="heart" style="left:35%; top:88%; animation-duration: 12s; font-size:20px;">💖</span>
+    <span class="heart" style="left:55%; top:95%; animation-duration: 16s; font-size:18px;">💗</span>
+    <span class="heart" style="left:70%; top:90%; animation-duration: 13s; font-size:22px;">💘</span>
+    <span class="heart" style="left:82%; top:93%; animation-duration: 15s; font-size:17px;">💕</span>
+    <span class="heart" style="left:92%; top:86%; animation-duration: 12s; font-size:19px;">💖</span>
+  </div>
+
   <main class="wrap">
-    <section class="card fade">
-      <h1 class="title">💗 Welkom op onze eigen website lieve schat 💗</h1>
-      <p class="subtitle">Sandy & Micha — voor altijd.</p>
-
-      <div class="divider"></div>
-
-      <p>
-        Dit is onze kleine plek op het internet. Later kunnen we hier foto’s,
-        herinneringen en leuke pagina’s toevoegen 😊
-      </p>
-
-      <div class="btnrow">
-        <button class="btn" id="loveBtn">💌 Klik voor een bericht</button>
-        <a class="btn" href="https://micha308.github.io/">🏠 Terug naar hoofdsite</a>
+    <section class="card">
+      <!-- HERO FOTO: vervang src met jouw bestandsnaam -->
+      <div class="hero">
+        <img src="micha_sandy.jpg" alt="Micha & Sandy">
       </div>
 
-      <p id="msg" style="display:none; margin-top:14px; color: var(--muted);">
-        ❤️ Jij bent mijn favoriete persoon. Altijd. ❤️
-      </p>
+      <div class="content fade">
+        <div class="badge">💗 Micha & Sandy</div>
+
+        <h1>Welkom op onze eigen website, lieve schat 💞</h1>
+        <p class="subtitle">Een klein romantisch hoekje op het internet — alleen van ons.</p>
+
+        <div class="divider"></div>
+
+        <p class="quote">
+          “Jij bent mijn favoriete persoon. Vandaag, morgen, en alle dagen daarna.” 💕
+        </p>
+
+        <div class="grid">
+          <div class="box">
+            <h2>Onze plek</h2>
+            <p>
+              Hier kunnen we later foto’s, herinneringen en lieve berichtjes toevoegen.
+              Gewoon iets om af en toe terug te lezen 😊
+            </p>
+          </div>
+
+          <div class="box">
+            <h2>Mini verrassing</h2>
+            <p>Druk op de knop hieronder voor een lief bericht 💌</p>
+          </div>
+        </div>
+
+        <div class="btnrow">
+          <button class="btn pink" id="loveBtn">💌 Lief bericht</button>
+          <button class="btn" id="heartBtn">💗 Meer hartjes</button>
+        </div>
+
+        <div class="message" id="msg">
+          ❤️ Ik ben dankbaar voor jou. Jij maakt mijn wereld zachter en mooier. ❤️
+        </div>
+      </div>
     </section>
   </main>
 
   <script>
-    const btn = document.getElementById("loveBtn");
+    // Lief bericht tonen/verbergen
+    const loveBtn = document.getElementById("loveBtn");
     const msg = document.getElementById("msg");
 
-    btn.addEventListener("click", () => {
+    loveBtn.addEventListener("click", () => {
       const zichtbaar = msg.style.display === "block";
       msg.style.display = zichtbaar ? "none" : "block";
-      btn.textContent = zichtbaar ? "💌 Klik voor een bericht" : "🙈 Verberg bericht";
+      loveBtn.textContent = zichtbaar ? "💌 Lief bericht" : "🙈 Verberg bericht";
+    });
+
+    // Extra hartjes toevoegen
+    const heartBtn = document.getElementById("heartBtn");
+    const heartsLayer = document.querySelector(".hearts");
+
+    function rand(min, max){ return Math.random() * (max - min) + min; }
+
+    heartBtn.addEventListener("click", () => {
+      for (let i = 0; i < 10; i++) {
+        const h = document.createElement("span");
+        h.className = "heart";
+        h.textContent = ["💗","💖","💞","💕","💘"][Math.floor(Math.random()*5)];
+        h.style.left = rand(5, 95) + "%";
+        h.style.top = rand(85, 98) + "%";
+        h.style.fontSize = rand(14, 26) + "px";
+        h.style.animationDuration = rand(10, 18) + "s";
+        heartsLayer.appendChild(h);
+        setTimeout(() => h.remove(), 19000);
+      }
     });
   </script>
 </body>
