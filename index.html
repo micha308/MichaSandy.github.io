@@ -14,8 +14,7 @@
       color: #222;
     }
 
-    html { scroll-behavior: smooth; }
-
+    /* ===== NAV ===== */
     .site-header{
       position: sticky;
       top: 0;
@@ -115,7 +114,7 @@
       animation: fadeIn 1.6s ease forwards;
     }
 
-    /* WELKOM BANNER (zoals je foto) */
+    /* WELKOM BANNER */
     .hero-text {
       max-width: 860px;
       margin: 26px auto 28px;
@@ -140,6 +139,22 @@
       color: #555;
       line-height: 1.55;
       font-weight: 500;
+    }
+
+    /* finishing touch */
+    .hero-text .tagline{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,77,141,0.12);
+      border: 1px solid rgba(255,77,141,0.22);
+      color: #ff2f7a;
+      font-weight: 900;
+      letter-spacing: .15px;
     }
 
     .container {
@@ -173,7 +188,6 @@
       text-decoration: none;
     }
 
-    /* Fotogalerij */
     .gallery{
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -232,6 +246,7 @@
       Een klein romantisch plekje op het internet —<br>
       alleen van ons.
     </p>
+    <div class="tagline">Alleen voor ons 💞</div>
   </section>
 
   <main class="container">
