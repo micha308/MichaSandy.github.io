@@ -8,6 +8,8 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html, body { overflow-x: hidden; }
+
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: linear-gradient(180deg, #ffe6ee, #fff);
@@ -31,6 +33,7 @@
       align-items: center;
       gap: 12px;
       position: relative;
+      justify-content: space-between;
     }
 
     .brand{
@@ -42,7 +45,7 @@
     }
 
     .nav-toggle{
-      margin-left: auto;
+      margin-left: 0;
       border: 0;
       background: transparent;
       font-size: 24px;
@@ -248,11 +251,10 @@
           <img src="./noordwijk.jpeg" alt="Noordwijk">
         </button>
 
-        <!-- Extra foto's toevoegen?
-        <button type="button" class="photo" data-src="./foto3.jpg" data-caption="...">
-          <img src="./foto3.jpg" alt="...">
+        <!-- NIEUW: jouw foto -->
+        <button type="button" class="photo" data-src="./sandymicha308gtb.jpg" data-caption="Micha & Sandy 💖">
+          <img src="./sandymicha308gtb.jpg" alt="Micha & Sandy">
         </button>
-        -->
       </div>
     </div>
   </main>
